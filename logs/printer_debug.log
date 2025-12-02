@@ -1,0 +1,6 @@
+2025-11-28 03:31:59 - Error: Could not connect to printer: POS80 at C:\xampp\htdocs\NEWKIOSK\api\printCashQRCode.php:88
+2025-11-28 03:42:01 - Error: escapeshellarg(): Argument #1 ($arg) must not contain any null bytes at C:\xampp\htdocs\NEWKIOSK\api\printCashQRCode.php:112
+2025-11-28 03:42:24 - Error: escapeshellarg(): Argument #1 ($arg) must not contain any null bytes at C:\xampp\htdocs\NEWKIOSK\api\printCashQRCode.php:112
+2025-11-28 04:04:46 - Error: escapeshellarg(): Argument #1 ($arg) must not contain any null bytes at C:\xampp\htdocs\NEWKIOSK\api\printCashQRCode.php:112
+2025-11-28 04:06:18 - Error: Class "Mike42\Escpos\PrintConnectors\WindowsPrintConnector" not found at C:\xampp\htdocs\NEWKIOSK\api\printCashQRCode.php:73
+2025-11-28 04:08:50 - Error: Failed to send to printer (return code: 1) at C:\xampp\htdocs\NEWKIOSK\api\printCashQRCode.php:98

@@ -1,0 +1,355 @@
+.order-item {
+    display: flex;
+    align-items: center;
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--secondary-color);
+    position: relative;
+}
+
+/* Image container */
+.order-item-image {
+    width: 150px;
+    height: 120px;
+    border-radius: 10px;
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.item-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.remove-item-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color:var(--danger-color);
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease;
+}
+
+.remove-item-btn:hover {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+/* Content area */
+.order-item-content {
+    flex-grow: 1;
+    padding: 0 30px;
+}
+
+.item-name {
+    margin: 0 0 5px;
+    font-size: 22px;
+    font-weight: 600;
+    color: black;
+}
+
+.price-per-item {
+    margin-top: 8px;
+    font-size: 16px;
+    color: black;
+}
+
+/* Controls area */
+.order-item-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    min-width: 200px;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    background: #fae1d171;
+    border: 2px solid #721719;
+    border-radius: 8px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.quantity-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.quantity-btn.minus {
+    background: #ffebcd88;
+    border: 1px solid #721719;
+    color: black;
+}
+
+.quantity-btn.plus {
+    background: #721719;
+    color: var(--primary-color);
+}
+
+.quantity-btn:hover {
+    transform: scale(1.05);
+}
+
+.quantity-btn.minus:hover {
+    background: #ffebcd;
+}
+
+.quantity-btn.plus:hover {
+    background: #721719;
+}
+
+.minus-symbol {
+    position: relative;
+    top: -2px;
+}
+
+.plus-symbol {
+    position: relative;
+    top: -1px;
+}
+
+.quantity {
+    width: 40px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.item-total {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: black;
+}
+@media (max-width: 768px) {
+    .order-item-content {
+    flex-grow: 1;
+    padding: 0 20px;
+    padding-right: 10px;
+}
+.order-item-controls {
+    display: flex;
+    flex-direction: column;
+   align-items: center; 
+    min-width: 120px; 
+    margin-right: 40px;
+}
+.item-image {
+    width: 70%;
+    height: 70%;
+    margin-left: 20px;
+    
+}
+.item-name {
+    font-size: 20px;
+}
+.order-item{
+    justify-content: center;
+   
+    border-bottom: 1px dotted black;
+}
+#orderSummaryModal .modal-content p {
+    font-size: 16px !important;
+    margin-top: 0px !important;
+}
+
+
+ @media screen and (max-width: 768px) {
+            .checkout-container {
+                padding: 25px 30px;
+                border-radius: 15px;
+            }
+
+            .price-labels p,
+            .price-values p {
+                font-size: 15px;
+            }
+
+            .total-label {
+                font-size: 22px;
+            }
+
+            .total-amount {
+                font-size: 26px;
+            }
+
+            .btn {
+                font-size: 15px;
+                padding: 14px 25px;
+            }
+            #orderSummaryModal .modal-content p {
+    font-size: 14px !important;
+ 
+}
+        }
+
+        /* Mobile styles */
+        @media screen and (max-width: 480px) {
+            
+
+            .checkout-container {
+                padding: 20px !important;
+                border-radius: 12px !important;
+                width: 100% !important;
+                box-sizing: border-box;
+                margin: 0 !important;
+            }
+
+            .price-row {
+                margin-bottom: 20px !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: flex-start !important;
+            }
+
+            .price-labels p,
+            .price-values p {
+                font-size: 14px !important;
+                margin: 0 0 6px 0 !important;
+                color: #fae1d1 !important;
+                font-weight: bold !important;
+            }
+
+            .price-values {
+                text-align: right !important;
+            }
+
+            .total-section {
+                margin-bottom: 25px !important;
+                padding-top: 12px !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                border-top: 2px dotted #eee !important;
+            }
+
+            .total-label {
+                font-size: 20px !important;
+                color: white !important;
+                margin: 0 !important;
+            }
+
+            .total-amount {
+                font-size: 24px !important;
+                color: white !important;
+                margin: 0 !important;
+            }
+
+            .button-container {
+                flex-direction: row !important;
+                gap: 12px !important;
+                display: flex !important;
+            }
+
+            .btn {
+                width: 100% !important;
+                max-width: none !important;
+                padding: 16px 20px !important;
+                font-size: 14px !important;
+                font-weight: 700 !important;
+                border: none !important;
+                cursor: pointer !important;
+                border-radius: 8px !important;
+                text-transform: uppercase !important;
+            }
+
+            .btn-order-more {
+                background: #ffebcd !important;
+                color: black !important;
+            }
+
+           
+
+        }
+
+        /* Extra small mobile screens (iPhone SE, etc.) */
+        @media screen and (max-width: 375px) {
+            .checkout-container {
+                padding: 16px !important;
+            }
+
+            .price-labels p,
+            .price-values p {
+                font-size: 13px !important;
+            }
+
+            .total-label {
+                font-size: 18px !important;
+            }
+
+            .total-amount {
+                font-size: 22px !important;
+            }
+
+            .btn {
+                padding: 14px 16px !important;
+                font-size: 13px !important;
+            }
+        }
+
+        /* iPhone 13 specific (390px width) */
+        @media screen and (max-width: 390px) and (min-width: 376px) {
+            .checkout-container {
+                padding: 18px !important;
+                border-radius: 12px !important;
+            }
+
+            .price-labels p,
+            .price-values p {
+                font-size: 14px !important;
+            }
+
+            .total-label {
+                font-size: 20px !important;
+            }
+
+            .total-amount {
+                font-size: 24px !important;
+            }
+        }
+
+        /* iOS Safari specific fixes */
+        @supports (-webkit-touch-callout: none) {
+            .btn {
+                -webkit-appearance: none !important;
+                -webkit-tap-highlight-color: transparent !important;
+            }
+            
+            .checkout-container {
+                -webkit-transform: translateZ(0) !important;
+                transform: translateZ(0) !important;
+            }
+        }
+
+        /* High DPI screens (Retina) */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .checkout-container {
+                border-width: 0.5px;
+            }
+        }
+
+
+}

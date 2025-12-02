@@ -1,0 +1,379 @@
+:root{
+    --primary-color: #ffebcd;
+    --secondary-color: #721719;
+    --accent-color: #e26b28;
+    --background-color: #e6cdbd;
+    --text-color: #0f5a2d;
+    --danger-color: #f44336;
+}
+
+
+/* Mobile-first styles ORDER TYPE. DINE IN OR TAKEOUT */
+#orderTypeModalMobile {
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh; /* Use dynamic viewport height for better mobile support */
+    background-image: url('images/background/homeback.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden; /* Prevent scrolling */
+}
+
+#orderTypeModalMobile .logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+}
+
+#orderTypeModalMobile .modal-title {
+    margin-bottom: 30px;
+    font-size: 24px;
+    text-align: center;
+    color:var(--primary-color);
+    padding: 0 15px;
+    line-height: 1.3;
+    flex-shrink: 0;
+}
+
+
+#orderTypeModalMobile .buttons-container {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+    flex-shrink: 0;
+}
+
+#orderTypeModalMobile .order-type-btn {
+   
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 45%;
+    height: 200px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 20px;
+    background: var(--secondary-color);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    cursor: pointer;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#orderTypeModalMobile .order-type-btn:hover,
+#orderTypeModalMobile .order-type-btn:active {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+}
+
+#orderTypeModalMobile .order-type-btn img {
+    width: 60px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+/* Tablet styles */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    #orderTypeModal .logo {
+        width: 180px;
+        margin-bottom: 25px;
+    }
+    
+    #orderTypeModal .modal-title {
+        font-size: 28px;
+        margin-bottom: 35px;
+    }
+    
+    #orderTypeModal .buttons-container {
+        gap: 20px;
+        max-width: 500px;
+    }
+    
+    #orderTypeModal .order-type-btn {
+        height: 220px;
+        font-size: 20px;
+        border-radius: 22px;
+    }
+    
+    #orderTypeModal .order-type-btn img {
+        width: 70px;
+    }
+}
+
+/* Large screens/kiosk */
+@media screen and (min-width: 1024px) {
+    #orderTypeModal {
+        padding: 40px;
+    }
+    
+    #orderTypeModal .logo {
+        width: clamp(200px, 25vw, 350px);
+        margin-bottom: clamp(30px, 4vh, 50px);
+    }
+    
+    #orderTypeModal .modal-title {
+        margin-bottom: clamp(25px, 4vh, 40px);
+        font-size: clamp(28px, 3.5vw, 36px);
+    }
+    
+    #orderTypeModal .buttons-container {
+        gap: clamp(20px, 3vw, 40px);
+        max-width: 800px;
+    }
+    
+    #orderTypeModal .order-type-btn {
+        width: clamp(200px, 35vw, 350px);
+        height: clamp(250px, 40vh, 400px);
+        font-size: clamp(20px, 3vw, 32px);
+        border-radius: 25px;
+    }
+    
+    #orderTypeModal .order-type-btn img {
+        width: clamp(70px, 12vw, 120px);
+        margin-bottom: 15px;
+    }
+}
+
+/* Specific fixes for very small screens */
+@media screen and (max-height: 600px) {
+    #orderTypeModal {
+        padding: 15px;
+    }
+    
+    #orderTypeModal .logo {
+        width: 120px;
+        margin-bottom: 15px;
+    }
+    
+    #orderTypeModal .modal-title {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    #orderTypeModal .order-type-btn {
+        height: 160px;
+        font-size: 16px;
+    }
+    
+    #orderTypeModal .order-type-btn img {
+        width: 50px;
+        margin-bottom: 8px;
+    }
+}
+
+/* Fix for phones with notches/rounded corners */
+@media screen and (max-width: 480px) {
+    #orderTypeModal {
+        padding: max(20px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom)) 20px;
+    }
+}
+
+
+
+/* PAYMENT METHOD RESPONSIVE */
+@media only screen and (max-width: 767px) {
+    #paymentOptionsModal .modal-content {
+        width: 95% !important;
+        max-width: 100% !important;
+        border-radius: 18px !important;
+        max-height: 90vh !important;
+        overflow-y: auto !important;
+    }
+    
+    #paymentOptionsModal .modal-content h2 {
+        font-size: 24px !important;
+    }
+    
+    #paymentOptionsModal .modal-content p {
+        font-size: 16px !important;
+        margin-top: 8px !important;
+    }
+    
+    #paymentOptionsModal .modal-content > div:first-child {
+        padding: 25px 20px 20px !important;
+    }
+    
+    #paymentOptionsModal .modal-content > div:last-child {
+        padding: 20px !important;
+    }
+    
+    #paymentOptionsModal .modal-content > div:last-child > div {
+        gap: 16px !important;
+    }
+    
+    #paymentOptionsModal button {
+        height: 80px !important;
+        padding: 0 15px !important;
+    }
+    
+    #paymentOptionsModal button div:first-child {
+        width: 45px !important;
+        height: 45px !important;
+        border-radius: 10px !important;
+        margin-right: 15px !important;
+    }
+    
+    #paymentOptionsModal button div:first-child span {
+        font-size: 22px !important;
+    }
+    
+    #paymentOptionsModal button div:nth-child(2) h3 {
+        font-size: 18px !important;
+    }
+    
+    #paymentOptionsModal button div:nth-child(2) p {
+        font-size: 14px !important;
+        margin-top: 4px !important;
+    }
+    
+    #paymentOptionsModal button span:last-child {
+        font-size: 22px !important;
+    }
+}
+
+/* PAYMENT METHOD REPONSIVE */
+@media only screen and (max-width: 480px) {
+    #paymentOptionsModal .modal-content h2 {
+        font-size: 22px !important;
+    }
+    
+    #paymentOptionsModal .modal-content p {
+        font-size: 14px !important;
+    }
+    
+    #paymentOptionsModal .modal-content > div:first-child {
+        padding: 20px 15px 15px !important;
+    }
+    
+    #paymentOptionsModal .modal-content > div:last-child {
+        padding: 15px !important;
+    }
+    
+    #paymentOptionsModal .modal-content > div:last-child > div {
+        gap: 12px !important;
+    }
+    
+    #paymentOptionsModal button {
+        height: 70px !important;
+        padding: 0 12px !important;
+    }
+    
+    #paymentOptionsModal button div:first-child {
+        width: 38px !important;
+        height: 38px !important;
+        border-radius: 8px !important;
+        margin-right: 12px !important;
+    }
+    
+    #paymentOptionsModal button div:first-child span {
+        font-size: 18px !important;
+    }
+    
+    #paymentOptionsModal button div:nth-child(2) h3 {
+        font-size: 16px !important;
+    }
+    
+    #paymentOptionsModal button div:nth-child(2) p {
+        font-size: 13px !important;
+    }
+    
+    #paymentOptionsModal button span:last-child {
+        font-size: 20px !important;
+     
+    }
+}
+#orderSummaryModal {
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-image: url('images/background/homeback.png');
+    background-size: cover;
+    background-position: center;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+}
+@media only screen and (max-width: 767px) {
+    #orderSummaryModal .modal-content {
+        width: 95% !important;
+        max-width: 100% !important;
+        border-radius: 18px !important;
+        max-height: 100% !important;
+        overflow-y: auto !important;
+
+    }
+    .orderbox{
+        padding: 30px 0px !important;
+    }
+    
+    #orderSummaryModal .modal-content h2 {
+        font-size: 24px !important;
+    }
+    
+    #orderSummaryModal .modal-content p {
+        font-size: 16px !important;
+        margin-top: 8px !important;
+    }
+    
+    #orderSummaryModal .modal-content > div:first-child {
+        padding: 25px 20px 20px !important;
+    }
+    
+    #orderSummaryModal .modal-content > div:last-child {
+        padding: 20px !important;
+    }
+}
+@media only screen and (max-width: 480px) {
+    #orderSummaryModal .modal-content h2 {
+        font-size: 22px !important;
+    }
+    
+    #orderSummaryModal .modal-content p {
+        font-size: 14px !important;
+    }
+    
+    #orderSummaryModal .modal-content > div:first-child {
+        padding: 20px 15px 15px !important;
+    }
+    
+    #orderSummaryModal .modal-content > div:last-child {
+        padding: 15px !important;
+        padding-top: 25px !important;
+                width: 95% !important;
+    }
+    .orderbox{
+        padding: 30px 0px !important;
+    }
+}
+
+.fullscreen-fallback {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background: #fff; /* or match your app background */
+  overflow: auto;
+}
+

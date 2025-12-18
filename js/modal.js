@@ -12,12 +12,12 @@ function createEmptyOrderModal() {
   modal.style.zIndex = "20000";
   modal.innerHTML = `
     <div class="modal-content" style="width: 90%; max-width: 480px; padding: 20px; background: var(--primary-color); border-radius: 10px; border: 1px solid #e26b28; text-align:center; box-shadow:0 8px 24px rgba(0,0,0,0.2);">
-      <img src="images/icons/alert.png" alt="Empty Cart" style="width: 150px; height: auto; margin-bottom: 20px;">
+      <img src="../images/icons/warning.png" alt="Empty Cart" style="width: 80px; height: 80px; margin-bottom: 10px;">
     <h2 style="margin-top:0; color: black">Your cart is empty</h2>
       <p style="color: black;">You haven't added any items yet. Would you like to browse the menu?</p>
       <div style="display:flex; gap:12px; justify-content:center; margin-top:18px;">
         <button class="empty-order-ok" style="padding:10px 18px; border-radius:8px; display:none; background:#4CAF50; color:#fff; border:none; cursor:pointer;">OK</button>
-        <button class="empty-order-browse" style="padding:10px 18px; border-radius:8px; background:var(--secondary-color); color:#fff8f3; border:none; cursor:pointer;">Browse Menu</button>
+        <button class="empty-order-browse" style="font-size: 15px; padding:10px 18px; border-radius:8px; background:var(--secondary-color); color: var(--primary-color); border: none; cursor:pointer;">Browse Menu</button>
       </div>
     </div>
   `;
@@ -36,11 +36,6 @@ function showEmptyOrderModal() {
 
   modal.querySelector(".empty-order-browse").addEventListener("click", () => {
     modal.remove();
-    // scroll to menu area if present
-    const menuSection = document.querySelector(".menu-content");
-    if (menuSection) {
-      menuSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
   });
 }
 

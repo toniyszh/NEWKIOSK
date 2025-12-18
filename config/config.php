@@ -17,7 +17,7 @@ return array(
         0 => 'POS80',
     ),
     'register_no' => 1,
-    'queue_prefix' => 'B',
+    'queue_prefix' => 9,
     'order_type' => '',
     'central_server_url' => 'http://127.0.0.1/hikiniku',
 );

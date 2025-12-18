@@ -29,7 +29,7 @@ try {
 
     $ref = $result->nextRef ? $result->nextRef + 1 : 1;
 
-    $formattedRef = str_pad($ref, 7, '0', STR_PAD_LEFT);
+    $formattedRef = str_pad($ref, 5, '0', STR_PAD_LEFT);
     $formattedRef = $queue_prefix . $formattedRef;
 
     http_response_code(200);

@@ -381,19 +381,19 @@ window.addEventListener("resize", function () {
   setTimeout(applyiOSSafariModalFix, 100);
 });
 
-if (
-  /iPad|iPhone|iPod/.test(navigator.userAgent) &&
-  /Safari/.test(navigator.userAgent) &&
-  !/Chrome|CriOS/.test(navigator.userAgent) &&
-  window.innerWidth <= 768
-) {
-  const applyPadding = () =>
-    document
-      .querySelectorAll(".modalcontent")
-      .forEach((el) => (el.style.paddingBottom = "80px"));
-  applyPadding();
-  new MutationObserver(() => applyPadding()).observe(document.body, {
-    childList: true,
-    subtree: true,
-  });
-}
+// if (
+//   /iPad|iPhone|iPod/.test(navigator.userAgent) &&
+//   /Safari/.test(navigator.userAgent) &&
+//   !/Chrome|CriOS/.test(navigator.userAgent) &&
+//   window.innerWidth <= 768
+// ) {
+//   const applyPadding = () =>
+//     document
+//       .querySelectorAll(".modalcontent")
+//       .forEach((el) => (el.style.paddingBottom = "80px"));
+//   applyPadding();
+//   new MutationObserver(() => applyPadding()).observe(document.body, {
+//     childList: true,
+//     subtree: true,
+//   });
+// }

@@ -18,7 +18,6 @@
     <script src="../js/paymentmodal.js"></script>
     <script src="../js/script.js"></script>
     <script src="../js/item.js"></script>
-    <script src="../js/paymentprocess.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qz-tray/qz-tray.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qz-tray/2.2.0/qz-tray.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.20/jsrsasign-all-min.js"></script>
@@ -192,6 +191,7 @@
                 </div>
 
 
+
                 <div style="padding: clamp(20px, 5vw, 50px);">
                     <div style="display: flex; flex-direction: column; gap: clamp(16px, 3vw, 24px);">
 
@@ -199,7 +199,7 @@
                         <button onclick="processPayment('debit-credit')"
                             style="display: flex; align-items: center; width: 100%; min-height: 80px; height: clamp(80px, 12vw, 100px); background: white; border: 1px solid #e0e0e0; border-radius: 16px; padding: 0 clamp(15px, 3vw, 30px); cursor: pointer; transition: all 0.2s ease; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
                             <div
-                                style="width: clamp(45px, 8vw, 60px); height: clamp(45px, 8vw, 60px); border-radius: 12px; background: #72171980; display: flex; align-items: center; justify-content: center; margin-right: clamp(12px, 3vw, 24px); flex-shrink: 0;">
+                                style="width: clamp(45px, 8vw, 60px); height: clamp(45px, 8vw, 60px); border-radius: 12px; background: #721719; display: flex; align-items: center; justify-content: center; margin-right: clamp(12px, 3vw, 24px); flex-shrink: 0;">
                                 <span style="color: white; font-size: clamp(20px, 4vw, 28px);">💳</span>
                             </div>
                             <div style="flex-grow: 1; min-width: 0;">
@@ -210,14 +210,14 @@
                                     securely with your card</p>
                             </div>
                             <span
-                                style="color: #72171980; font-size: clamp(20px, 4vw, 28px); margin-left: clamp(8px, 2vw, 20px); flex-shrink: 0;">›</span>
+                                style="color: #721719; font-size: clamp(20px, 4vw, 28px); margin-left: clamp(8px, 2vw, 20px); flex-shrink: 0;">›</span>
                         </button>
 
 
                         <button onclick="processPayment('counter')"
                             style="display: flex; align-items: center; width: 100%; min-height: 80px; height: clamp(80px, 12vw, 100px); background: white; border: 1px solid #e0e0e0; border-radius: 16px; padding: 0 clamp(15px, 3vw, 30px); cursor: pointer; transition: all 0.2s ease; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
                             <div
-                                style="width: clamp(45px, 8vw, 60px); height: clamp(45px, 8vw, 60px); border-radius: 12px; background: #72171980; display: flex; align-items: center; justify-content: center; margin-right: clamp(12px, 3vw, 24px); flex-shrink: 0;">
+                                style="width: clamp(45px, 8vw, 60px); height: clamp(45px, 8vw, 60px); border-radius: 12px; background: #721719; display: flex; align-items: center; justify-content: center; margin-right: clamp(12px, 3vw, 24px); flex-shrink: 0;">
                                 <span style="color: white; font-size: clamp(20px, 4vw, 28px);">💵</span>
                             </div>
                             <div style="flex-grow: 1; min-width: 0;">
@@ -324,6 +324,7 @@
 
             const mobilebool = localStorage.getItem('isMobile');
             if (paymentMethod === 'counter') {
+
 
                 window.location.href = '../pages/ordercash.php';
             } else {

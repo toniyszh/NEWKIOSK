@@ -10,35 +10,55 @@ function addToCart(currentOrder) {
         }
         referenceNo = data.data.referenceNo;
         localStorage.setItem("referenceNo", referenceNo);
-
         addToCart(currentOrder);
       })
       .catch((error) => {
         console.error("Error generating reference number:", error);
-        alert("Error generating reference number. Please try again.");
+        alert("Reload or Restart this app to start a new order.");
       });
     return;
   }
 
-  const cartItems = currentOrder.map((item) => ({
-    item_code: item.itemCode,
-    description: item.name,
-    quantity: item.quantity,
-    price: item.price,
-    total: item.totalPrice,
-    taxable: true,
-  }));
+  const cartItems = currentOrder.flatMap((item) => {
+    const parent = {
+      item_code: item.itemCode,
+      description: item.name,
+      quantity: item.quantity,
+      price: item.price,
+      total: item.totalPrice,
+      taxable: true,
+      is_modifier: false,
+
+      special_instruction: item.specialInstruction || "",
+      cust_instruction: item.custInstruction || "",
+    };
+
+    const modifiers = (item.modifiers || []).map((mod) => ({
+      item_code: mod.itemOption ?? "",
+      description: mod.name,
+      quantity: item.quantity,
+      price: 0,
+      total: 0,
+      taxable: false,
+      is_modifier: true,
+      special_instruction: "",
+    }));
+
+    return [parent, ...modifiers];
+  });
+  console.log("Cart payload:", JSON.stringify(cartItems, null, 2));
+
+  const orderType = localStorage.getItem("orderType") || "dine-in";
 
   const body = {
     ReferenceNo: referenceNo,
     cart: cartItems,
+    orderType: orderType,
   };
 
   const options = {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   };
 

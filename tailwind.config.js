@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        yusei: ['"Yusei Magic"', "sans-serif"],
+        Montserrat: ['"Montserrat"', "sans-serif"],
       },
       colors: {
         primary: "var(--primary-color)",

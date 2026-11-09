@@ -1,16 +1,18 @@
 .order-item {
     display: flex;
     align-items: center;
-    padding-bottom: 25px;
-    margin-bottom: 25px;
-    border-bottom: 1px solid var(--secondary-color);
-    position: relative;
+    padding: 20px;
+    margin-bottom: 15px;
+    background: rgba(250, 225, 209, 0.242); 
+    border-radius: 12px; 
+    border-left: 5px solid #721719; 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Image container */
 .order-item-image {
     width: 150px;
-    height: 120px;
+    height: 150px;
     border-radius: 10px;
     overflow: hidden;
     flex-shrink: 0;
@@ -36,7 +38,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color:var(--danger-color);
+    color: #721719;
     font-weight: bold;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: background-color 0.2s ease;
@@ -56,13 +58,13 @@
     margin: 0 0 5px;
     font-size: 22px;
     font-weight: 600;
-    color: black;
+    color: #152d07;
 }
 
 .price-per-item {
     margin-top: 8px;
     font-size: 16px;
-    color: black;
+    color: #152d07;
 }
 
 /* Controls area */
@@ -77,72 +79,41 @@
     display: flex;
     align-items: center;
     background: #fae1d171;
-    border: 2px solid #721719;
-    border-radius: 8px;
-    padding: 5px;
-    margin-bottom: 10px;
+    border: 1px solid rgba(114, 23, 25, 0.2);
+    border-radius: 50px; 
+    padding: 4px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); 
 }
 
 .quantity-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%; 
     border: none;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
 }
 
 .quantity-btn.minus {
-    background: #ffebcd88;
-    border: 1px solid #721719;
-    color: black;
+    background: #fae1d1af;
+    color: #721719;
 }
 
 .quantity-btn.plus {
     background: #721719;
-    color: var(--primary-color);
-}
-
-.quantity-btn:hover {
-    transform: scale(1.05);
-}
-
-.quantity-btn.minus:hover {
-    background: #ffebcd;
-}
-
-.quantity-btn.plus:hover {
-    background: #721719;
-}
-
-.minus-symbol {
-    position: relative;
-    top: -2px;
-}
-
-.plus-symbol {
-    position: relative;
-    top: -1px;
+    color: #ffebcd;
 }
 
 .quantity {
-    width: 40px;
+    width: 35px;
     text-align: center;
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
+    letter-spacing: -1px;
 }
 
 .item-total {
     margin: 0;
     font-size: 22px;
     font-weight: 600;
-    color: black;
+    color: #152d07;
 }
 @media (max-width: 768px) {
     .order-item-content {
@@ -169,7 +140,7 @@
 .order-item{
     justify-content: center;
    
-    border-bottom: 1px dotted black;
+    border-bottom: 1px dotted #152d07;
 }
 #orderSummaryModal .modal-content p {
     font-size: 16px !important;

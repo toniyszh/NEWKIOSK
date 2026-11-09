@@ -1,19 +1,19 @@
  
-@import url('https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-        .yusei-magic-regular {
-        font-family: "Yusei Magic", sans-serif;
-        font-weight: 400;
-        font-style: normal;
-        }
-
+.montserrat {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
  
  *      {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Yusei Magic", sans-serif;
-            font-weight: 400;
+            font-family: "Montserrat", sans-serif;
+            font-weight: 700;
             font-style: normal;
         }
 

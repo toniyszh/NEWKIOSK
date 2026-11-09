@@ -10,15 +10,16 @@ $errorMessage = '';
 
 <head>
     <meta charset="UTF-8">
+    <?php require __DIR__ . '/../config/kioskLanguage.php'; ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Offline Order QR</title>
+    <title data-i18n="offlineOrderQr">Offline Order QR</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../js/script.js"></script>
 </head>
 
 <body class="font-sans text-center p-5">
-    <h1 class="text-3xl font-bold mb-4">Order QR</h1>
-    <p class="text-gray-600 mb-5">Scan this QR at the kiosk to load your order.</p>
+    <h1 class="text-3xl font-bold mb-4" data-i18n="orderQr">Order QR</h1>
+    <p class="text-gray-600 mb-5" data-i18n="scanOrderQr">Scan this QR at the kiosk to load your order.</p>
 
     <?php if ($saveSuccess): ?>
         <div class="text-green-600 my-2.5">✓ QR Code saved to database successfully</div>
@@ -31,7 +32,7 @@ $errorMessage = '';
     <div id="qrcode" class="my-5 mx-auto w-full max-w-[250px]"></div>
     <button
         class="footer-btn return-btn bg-[#721719] text-[#fff8f3] py-3 px-12 text-xl font-bold border-2 border-[#721719] cursor-pointer rounded-lg hover:bg-[#5d1515] transition-colors duration-200"
-        onclick="finishOrder()">
+        onclick="finishOrder()" data-i18n="newOrder">
         Create New Order
     </button>
 

@@ -1,22 +1,8 @@
-//banner or ads? parallax
-document.addEventListener("DOMContentLoaded", function () {
-  const header = document.querySelector(".header");
-  const images = ["../images/adsBanner/1.jpg"];
-
-  let currentIndex = 0;
-
-  setInterval(() => {
-    currentIndex = (currentIndex + 1) % images.length;
-    header.style.backgroundImage = `url('${images[currentIndex]}')`;
-  }, 3000);
-});
-
-// UNIFIED DRAG SCROLL FUNCTION - Works for both vertical and horizontal scrolling
 document.addEventListener("DOMContentLoaded", function () {
   function applyDragScroll(
     containerSelector,
     direction = "vertical",
-    scrollSpeed = 2.5
+    scrollSpeed = 2.5,
   ) {
     const container = document.querySelector(containerSelector);
 
@@ -29,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let velocity = 0;
     let animationFrame;
 
-    // Mouse Events
     container.addEventListener("mousedown", function (e) {
       if (e.target.tagName !== "A" && e.target.tagName !== "BUTTON") {
         isDragging = true;
@@ -43,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
         container.classList.add("dragging");
         container.style.cursor = "grabbing";
 
-        // Cancel any ongoing momentum
         if (animationFrame) {
           cancelAnimationFrame(animationFrame);
         }
@@ -54,9 +38,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.addEventListener("mousemove", function (e) {
       if (!isDragging) return;
-      e.preventDefault();
 
-      const pos = direction === "horizontal" ? e.pageX : e.pageY;
+      const pos = direction === "horizontal" ? e.clientX : e.clientY;
       const delta = pos - lastPos;
       velocity = delta;
       lastPos = pos;
@@ -76,11 +59,9 @@ document.addEventListener("DOMContentLoaded", function () {
       container.classList.remove("dragging");
       container.style.cursor = "grab";
 
-      // Apply momentum
       applyMomentum();
     });
 
-    // Touch Events
     let touchStartTime = 0;
     let touchStartPos = 0;
     let touchLastPos = 0;
@@ -99,8 +80,8 @@ document.addEventListener("DOMContentLoaded", function () {
           touchLastPos = touchStartPos;
           startPos =
             direction === "horizontal"
-              ? e.touches[0].pageX
-              : e.touches[0].pageY;
+              ? e.touches[0].clientX
+              : e.touches[0].clientY;
           scrollPos =
             direction === "horizontal"
               ? container.scrollLeft
@@ -109,13 +90,12 @@ document.addEventListener("DOMContentLoaded", function () {
           touchVelocity = 0;
           container.classList.add("dragging");
 
-          // Cancel any ongoing momentum
           if (animationFrame) {
             cancelAnimationFrame(animationFrame);
           }
         }
       },
-      { passive: true }
+      { passive: true },
     );
 
     container.addEventListener(
@@ -132,7 +112,9 @@ document.addEventListener("DOMContentLoaded", function () {
         touchLastPos = currentPos;
 
         const pos =
-          direction === "horizontal" ? e.touches[0].pageX : e.touches[0].pageY;
+          direction === "horizontal"
+            ? e.touches[0].clientX
+            : e.touches[0].clientY;
         const walk = (startPos - pos) * scrollSpeed;
 
         if (direction === "horizontal") {
@@ -142,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         e.preventDefault();
       },
-      { passive: false }
+      { passive: false },
     );
 
     container.addEventListener(
@@ -152,14 +134,12 @@ document.addEventListener("DOMContentLoaded", function () {
         isDragging = false;
         container.classList.remove("dragging");
 
-        // Use the last tracked velocity for momentum
-        velocity = touchVelocity * 3; // Amplify for better momentum
+        velocity = touchVelocity * 3;
         applyMomentum();
       },
-      { passive: true }
+      { passive: true },
     );
 
-    // Momentum function
     function applyMomentum() {
       if (Math.abs(velocity) > 0.5) {
         animationFrame = requestAnimationFrame(() => {
@@ -169,10 +149,8 @@ document.addEventListener("DOMContentLoaded", function () {
             container.scrollTop -= velocity;
           }
 
-          // Deceleration
           velocity *= 0.92;
 
-          // Continue momentum
           if (Math.abs(velocity) > 0.5) {
             applyMomentum();
           }
@@ -195,11 +173,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // Set initial cursor
     container.style.cursor = "grab";
   }
 
-  // Apply horizontal scrolling to .sidebar and vertical scrolling to .menu-content
+  applyDragScroll(".sidebar", "vertical", 2);
   applyDragScroll(".sidebar", "horizontal", 2);
   applyDragScroll(".menu-content", "vertical", 2);
 });
@@ -252,7 +229,6 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("resize", checkOverflow);
   }
 
-  // Add styles
   const style = document.createElement("style");
   style.textContent = `
     .sidebar-container {
@@ -282,40 +258,10 @@ document.addEventListener("DOMContentLoaded", function () {
   document.head.appendChild(style);
 });
 
-//fullscreen automatics
-function enableFullScreen() {
-  const elem = document.documentElement;
-
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if (elem.webkitRequestFullscreen) {
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) {
-    elem.msRequestFullscreen();
-  } else if (elem.mozRequestFullScreen) {
-    elem.mozRequestFullScreen();
-  }
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  enableFullScreen();
-
-  document.addEventListener(
-    "click",
-    function onFirstClick() {
-      enableFullScreen();
-      document.removeEventListener("click", onFirstClick);
-    },
-    { once: true }
-  );
-});
-
-//disable inspect screen element
 document.addEventListener("contextmenu", function (e) {
   e.preventDefault();
 });
 
-// iOS Safari Mobile Detection and Modal Content Fix
 function detectiOSSafariMobile() {
   const userAgent = navigator.userAgent;
   const platform = navigator.platform;

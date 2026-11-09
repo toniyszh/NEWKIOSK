@@ -26,35 +26,41 @@ try {
         throw new Exception('Invalid JSON input', 400);
     }
 
-    $referenceNo = $input['referenceNo'] ?? null;
-    $customerID = $input['customerID'] ?? null;
-    $items = $input['items'] ?? [];
-    $kioskRegNo = $input['kioskRegNo'] ?? $config['kioskRegNo'] ?? 'KIOSK001';
+    $referenceNo   = $input['referenceNo'] ?? null;
+    $customerID    = $input['customerID'] ?? null;
+    $items         = $input['items'] ?? [];
+    $kioskRegNo    = $input['kioskRegNo'] ?? $config['kioskRegNo'] ?? 'KIOSK001';
     $totalDiscount = $input['totalDiscount'] ?? 0;
-    $poNumber = $input['poNumber'] ?? null;
+    $poNumber      = $input['poNumber'] ?? null;
     $freightCharge = $input['freightCharge'] ?? 0;
+    $orderType     = $input['orderType'] ?? null;
+    $orderName     = $input['orderName'] ?? null;
 
     if (!$referenceNo) {
         throw new Exception('Reference number is required', 400);
     }
 
+    if (!$orderType) {
+        throw new Exception('Order type is required', 400);
+    }
+
     $qrCodeValue = $referenceNo;
 
 
-    $checkSql = "SELECT COUNT(*) as count FROM KIOSK_TransactionHold WHERE ReferenceNo = :referenceNo";
+    $checkSql    = "SELECT COUNT(*) as count FROM KIOSK_TransactionHold WHERE ReferenceNo = :referenceNo";
     $checkParams = [':referenceNo' => $referenceNo];
     $checkResult = fetch($checkSql, $checkParams, $pdo);
 
     if ($checkResult && $checkResult->count > 0) {
         http_response_code(200);
         $response = [
-            'success' => true,
-            'message' => 'QR code already saved',
+            'success'     => true,
+            'message'     => 'QR code already saved',
             'qrCodeValue' => $referenceNo,
-            'data' => [
+            'data'        => [
                 'referenceNo' => $referenceNo,
-                'kioskRegNo' => $kioskRegNo,
-                'customerID' => $customerID
+                'kioskRegNo'  => $kioskRegNo,
+                'customerID'  => $customerID
             ]
         ];
         echo json_encode($response);
@@ -65,13 +71,14 @@ try {
 
     try {
 
+
         $sql1 = "INSERT INTO KIOSK_TransactionHold (ReferenceNo, KioskRegNo, CustomerID, DateCreated, QrCodeValue) 
-                VALUES (:referenceNo, :kioskRegNo, :customerID, GETDATE(), :qrCodeValue)";
+                 VALUES (:referenceNo, :kioskRegNo, :customerID, GETDATE(), :qrCodeValue)";
 
         $params1 = [
             ':referenceNo' => $referenceNo,
-            ':kioskRegNo' => $kioskRegNo,
-            ':customerID' => $customerID ?: null,
+            ':kioskRegNo'  => $kioskRegNo,
+            ':customerID'  => $customerID ?: null,
             ':qrCodeValue' => $qrCodeValue
         ];
 
@@ -81,56 +88,53 @@ try {
         }
 
 
-        $holdNoSql = "SELECT MAX(ISNULL(HoldNo, 0)) + 1 as nextHoldNo FROM TRANSACTIONHOLD";
-        $holdNoStmt = $pdo->query($holdNoSql);
+        $holdNoSql    = "SELECT MAX(ISNULL(HoldNo, 0)) + 1 as nextHoldNo FROM TRANSACTIONHOLD";
+        $holdNoStmt   = $pdo->query($holdNoSql);
         $holdNoResult = $holdNoStmt->fetch(PDO::FETCH_OBJ);
-        $holdNo = $holdNoResult->nextHoldNo ?? 1;
+        $holdNo       = $holdNoResult->nextHoldNo ?? 1;
+
 
         $sql2 = "INSERT INTO TransactionHold (
-            ID,
-           HoldNo,
-            DateTime, 
-            RegisterNo, 
-            SaleType, 
-            TotalDiscount, 
-            Cust_AcctNo, 
-            PONumber, 
-            FreightCharge,
-            CashierID,
-            Batchno,
-            TableNo,
-            Sync
-        ) VALUES (
-        :ID,
-        :holdNo,
-            GETDATE(), 
-            :registerNo, 
-            :saleType, 
-            :totalDiscount, 
-            :custAcctNo, 
-            :poNumber, 
-            :freightCharge,
-            :cashierID,
-            :batchno,
-            :tableNo,
-            :sync
-        )";
+                    HoldNo,
+                    DateTime, 
+                    RegisterNo, 
+                    SaleType, 
+                    TotalDiscount, 
+                    Cust_AcctNo, 
+                    PONumber, 
+                    FreightCharge,
+                    CashierID,
+                    Batchno,
+                    TableNo,
+                    Sync
+                ) VALUES (
+                    :holdNo,
+                    GETDATE(), 
+                    :registerNo, 
+                    :saleType, 
+                    :totalDiscount, 
+                    :custAcctNo, 
+                    :poNumber, 
+                    :freightCharge,
+                    :cashierID,
+                    :batchno,
+                    :tableNo,
+                    :sync
+                )";
 
         $params2 = [
-            ':ID' => $referenceNo,
-            ':holdNo' => $referenceNo,
-            ':registerNo' => 1,
-            ':saleType' => 'Retail',
+            ':holdNo'       => $referenceNo,
+            ':registerNo'   => 1,
+            ':saleType'     => 'Retail',
             ':totalDiscount' => 0.00,
-            ':custAcctNo' => '',
-            ':poNumber' => '',
+            ':custAcctNo'   => '',
+            ':poNumber'     => '',
             ':freightCharge' => $referenceNo,
-            ':cashierID' => '1155',
-            ':batchno' => 4,
-            ':tableNo' => $referenceNo,
-            ':sync' => 0
+            ':cashierID'    => '1155',
+            ':batchno'      => 4,
+            ':tableNo'      => $orderName ?: $referenceNo,
+            ':sync'         => 0
         ];
-
 
         $stmt2 = $pdo->prepare($sql2);
         if (!$stmt2->execute($params2)) {
@@ -138,22 +142,39 @@ try {
         }
 
 
+        $transactionHoldID = $pdo->lastInsertId();
+
+
+        $sql3 = "INSERT INTO OrderType (HoldID, Status, Datetime) 
+                 VALUES (:holdID, :status, GETDATE())";
+
+        $params3 = [
+            ':holdID'  => $transactionHoldID,
+            ':status'  => $orderType
+        ];
+
+        $stmt3 = $pdo->prepare($sql3);
+        if (!$stmt3->execute($params3)) {
+            throw new Exception('Failed to save to OrderType', 500);
+        }
+
         $pdo->commit();
 
         http_response_code(200);
         $response = [
-            'success' => true,
-            'message' => 'QR code saved successfully to both tables',
+            'success'     => true,
+            'message'     => 'QR code saved successfully to all tables',
             'qrCodeValue' => $referenceNo,
-            'data' => [
-                'referenceNo' => $referenceNo,
-                'kioskRegNo' => $kioskRegNo,
-                'customerID' => $customerID,
-                'holdNo' => $holdNo
+            'data'        => [
+                'referenceNo'       => $referenceNo,
+                'kioskRegNo'        => $kioskRegNo,
+                'customerID'        => $customerID,
+                'holdNo'            => $holdNo,
+                'transactionHoldID' => $transactionHoldID,
+                'orderType'         => $orderType
             ]
         ];
     } catch (Exception $e) {
-
         $pdo->rollBack();
         throw $e;
     }

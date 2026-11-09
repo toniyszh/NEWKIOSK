@@ -72,9 +72,9 @@ try {
         $totalQuantity += $item['Quantity'];
     }
 
-    $serviceCharge = $subtotal * 0.10;
-    $vat = $totalTaxable * 0.12;
-    $grandTotal = $subtotal + $serviceCharge + $vat;
+    // $serviceCharge = $subtotal * 0.10;
+    // $vat = $totalTaxable * 0.12;
+    // $grandTotal = $subtotal + $serviceCharge + $vat;
 
     $response['success'] = true;
     $response['data'] = [

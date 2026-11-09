@@ -43,10 +43,10 @@ try {
         $kioskRegNo = $config['register_no'] ?? 1;
     }
 
-    // Optional: Log audit trail if function exists
-    if (isset($kioskRegNo) && function_exists('addAuditLog')) {
-        addAuditLog($kioskRegNo, 'payment_gateway.php', json_encode($data), $pdo);
-    }
+    // // Optional: Log audit trail if function exists
+    // if (isset($kioskRegNo) && function_exists('addAuditLog')) {
+    //     addAuditLog($kioskRegNo, 'payment_gateway.php', json_encode($data), $pdo);
+    // }
 
     $referenceNo = $data['ReferenceNo'];
     $status = strtolower($data['Status']);
@@ -63,6 +63,8 @@ try {
         $scanned_gift_cert_codes = $data['scanned_gift_cert_codes'] ?? [];
         $CustomerName = '';
         $IDNumber = '';
+        $orderName = $data['orderName'] ?? null;
+        $tableName = $orderName;
 
         $sql = "SELECT * FROM KIOSK_DiscountRequests WHERE ReferenceNo = :referenceNo and register_no = :kioskRegNo AND status = 'used'";
         $params = [
@@ -83,7 +85,7 @@ try {
         $result = fetch($sql, $params, $pdo);
 
         if ($result) {
-            $sql = "UPDATE KIOSK_TransactionHeader SET Datetime = GETDATE(), CustomerName = :CustomerName, IDNumber = :IDNumber, SubTotal = :subtotal, ServiceCharge = :service_charge, TotalDue = :total, PaymentType = :paymentType WHERE ReferenceNo = :referenceNo and KioskRegNo = :kioskRegNo";
+            $sql = "UPDATE KIOSK_TransactionHeader SET Datetime = GETDATE(), CustomerName = :CustomerName, IDNumber = :IDNumber, SubTotal = :subtotal, ServiceCharge = :service_charge, TotalDue = :total, PaymentType = :paymentType, TableName = :tableName WHERE ReferenceNo = :referenceNo and KioskRegNo = :kioskRegNo";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
                 ':CustomerName' => $CustomerName,
@@ -93,13 +95,14 @@ try {
                 ':subtotal' => $subtotal,
                 ':service_charge' => $service_charge,
                 ':total' => $total,
-                ':paymentType' => $paymentType
+                ':paymentType' => $paymentType,
+                ':tableName' => $tableName
             ]);
         } else {
             $sql = "INSERT INTO [KIOSK_TransactionHeader] 
-                ([KioskRegNo], [ReferenceNo], [CustomerName], [IDNumber], [SubTotal], [ServiceCharge], [TotalDue], [PaymentType], [DateTime])
+                ([KioskRegNo], [ReferenceNo], [CustomerName], [IDNumber], [SubTotal], [ServiceCharge], [TotalDue], [PaymentType], [TableName], [DateTime])
                 VALUES
-                (:kioskRegNo, :referenceNo, :CustomerName, :IDNumber, :subtotal, :service_charge, :total, :paymentType, GETDATE())
+                (:kioskRegNo, :referenceNo, :CustomerName, :IDNumber, :subtotal, :service_charge, :total, :paymentType, :tableName, GETDATE())
             ";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
@@ -110,7 +113,8 @@ try {
                 ':total' => $total,
                 ':paymentType' => $paymentType,
                 ':CustomerName' => $CustomerName,
-                ':IDNumber' => $IDNumber
+                ':IDNumber' => $IDNumber,
+                ':tableName' => $tableName
             ]);
         }
 
@@ -153,7 +157,7 @@ try {
 
         $response['success'] = true;
         $response['status'] = 'pending';
-        $response['message'] = 'Transaction is being processed. Please wait...';
+        $response['message'] = '     is being processed. Please wait...';
     } elseif ($status === 'cancel') {
         $sql = "DELETE FROM KIOSK_TransactionStatus WHERE ReferenceNo = :referenceNo and KioskRegNo = :kioskRegNo";
         $stmt = $pdo->prepare($sql);
@@ -197,14 +201,15 @@ try {
     if ($pdo && $pdo->inTransaction()) {
         $pdo->rollBack();
     }
-    http_response_code($e->getCode() ?: 500);
+    $errorCode = is_int($e->getCode()) ? $e->getCode() : 500;
+    http_response_code($errorCode ?: 500);
     $response['success'] = false;
     $response['status'] = 'error';
     $response['message'] = $e->getMessage();
-    // Optional: Log audit trail if function exists
-    if (isset($kioskRegNo) && function_exists('addAuditLog')) {
-        addAuditLog($kioskRegNo, 'payment_gateway.php', json_encode($response), $pdo);
-    }
+    // // Optional: Log audit trail if function exists
+    // if (isset($kioskRegNo) && function_exists('addAuditLog')) {
+    //     addAuditLog($kioskRegNo, 'payment_gateway.php', json_encode($response), $pdo);
+    // }
     echo json_encode($response);
 }
 

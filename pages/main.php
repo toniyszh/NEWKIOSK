@@ -3,8 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
+    <?php require __DIR__ . '/../config/kioskLanguage.php'; ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>Kiosk Menu</title>
+    <title data-i18n="menuTitle">Kiosk Menu</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/responsive.css" crossorigin>
 
@@ -12,26 +13,205 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+
     <script src="../js/modal.js" defer></script>
     <script src="../js/behaviors.js"></script>
     <script src="../js/paymentmodal.js"></script>
     <script src="../js/script.js"></script>
     <script src="../js/item.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/qz-tray/qz-tray.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qz-tray/2.2.0/qz-tray.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.20/jsrsasign-all-min.js"></script>
 
+    <style>
+        .kiosk-menu {
+            display: flex;
+            flex-direction: column;
+            font-family: "Caslon 540", "Caslon #540", Georgia, serif;
+        }
+
+        .kiosk-menu * {
+            font-family: inherit;
+        }
+
+        .kiosk-menu-header {
+            --header-control-height: clamp(56px, 6vw, 76px);
+            position: relative;
+            z-index: 101;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            box-sizing: border-box;
+            height: 200px;
+            flex: none;
+            padding: 16px clamp(12px, 5vw, 32px);
+            background: #141414;
+            box-shadow: 0 5px 8px -2px rgba(0, 0, 0, 0.55),
+                0 16px 30px -5px rgba(0, 0, 0, 0.65);
+            color: #f4f4f4;
+        }
+
+        .kiosk-menu-logo {
+            position: relative;
+            width: clamp(76px, calc(40vw - 48px), 420px);
+            aspect-ratio: 2.5;
+            overflow: hidden;
+        }
+
+        .kiosk-menu-logo img {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: auto;
+            /* The visible artwork sits above the center of the PNG. */
+            transform: translateY(-39%);
+        }
+
+        .kiosk-menu-actions {
+            display: flex;
+            align-items: center;
+            gap: clamp(8px, 2.5vw, 16px);
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        .kiosk-language,
+        .kiosk-menu-header .view-cart-btn {
+            display: inline-flex;
+            align-items: center;
+            box-sizing: border-box;
+            min-height: var(--header-control-height);
+            border: 1px solid #aaa;
+            border-radius: 999px;
+        }
+
+        .kiosk-language>*,
+        .kiosk-menu-header .view-cart-btn {
+            font-weight: 400;
+            letter-spacing: 0.04em;
+        }
+
+        .kiosk-language>* {
+            display: grid;
+            place-items: center;
+            min-height: calc(var(--header-control-height) - 2px);
+            padding: 0 clamp(8px, 2.25vw, 16px);
+            border: 0;
+            border-radius: inherit;
+            font-size: clamp(12px, 2.5vw, 16px);
+        }
+
+        .kiosk-language button {
+            background: transparent;
+            color: #bbb;
+            cursor: pointer;
+        }
+
+        .kiosk-language button[aria-pressed="true"] {
+            background: #f4f4f4;
+            color: #141414;
+        }
+
+        .kiosk-menu-header .view-cart-btn {
+            position: relative;
+            gap: clamp(8px, 1.2vw, 14px);
+            width: auto !important;
+            padding: 0 clamp(11px, 2.5vw, 30px) !important;
+            background: transparent;
+            color: inherit;
+            font-size: clamp(14px, 2.8vw, 24px) !important;
+            cursor: pointer;
+        }
+
+        .kiosk-menu-header .view-cart-btn svg {
+            width: clamp(18px, 2.5vw, 26px);
+            height: auto;
+        }
+
+        .kiosk-cart-count {
+            position: absolute;
+            top: -11px;
+            right: -7px;
+            display: grid;
+            place-items: center;
+            box-sizing: border-box;
+            min-width: 23px;
+            height: 23px;
+            padding: 0 5px;
+            border-radius: 999px;
+            background: #f4f4f4;
+            color: #141414;
+            font-size: 11px;
+        }
+
+        .kiosk-menu>.container {
+            flex: 1;
+            min-height: 0;
+            height: auto;
+        }
+
+        .kiosk-menu .menu-content {
+            align-self: stretch;
+            box-sizing: border-box;
+            height: auto;
+        }
+
+        .kiosk-menu .menu-header {
+            font-weight: 400;
+            letter-spacing: 0.09em;
+        }
+
+        .kiosk-menu .menu-grid {
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .kiosk-menu .menu-content {
+                flex: 1;
+                min-height: 0;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .kiosk-menu .sidebar-container {
+                align-self: stretch;
+            }
+
+            .kiosk-menu .sidebar {
+                box-sizing: border-box;
+                max-height: 100%;
+            }
+        }
+    </style>
 </head>
-<style>
 
-
-</style>
-
-<body>
-    <div class="header">
-
-    </div>
+<body class="kiosk-menu">
+    <header class="kiosk-menu-header">
+        <div class="kiosk-menu-logo">
+            <img src="../images/logos/logo.png" alt="Worth Your While">
+        </div>
+        <div class="kiosk-menu-actions">
+            <div class="kiosk-language" role="group" aria-label="Menu language" data-i18n-aria-label="menuLanguage">
+                <button type="button" lang="en" data-kiosk-language="en" aria-pressed="true" aria-label="English" disabled>EN</button>
+                <button type="button" lang="ja" data-kiosk-language="ja" aria-pressed="false" disabled>日本語</button>
+            </div>
+            <button type="button" class="view-cart-btn" onclick="Tocart()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M2 3h3l2.5 11h11L21 6H6"></path>
+                    <circle cx="9" cy="19" r="1.5"></circle>
+                    <circle cx="17" cy="19" r="1.5"></circle>
+                </svg>
+                <bdi data-i18n="myOrder">My Order</bdi>
+                <span class="kiosk-cart-count">0</span>
+            </button>
+        </div>
+    </header>
     <div class="container">
 
 
@@ -41,13 +221,6 @@
 
                     <div class="sidebar">
                         <ul>
-                            <li class="category-item" data-category="all" onclick="filterItems('all')">
-                                <img src="../images/logos/logo.png" style="height: 120px; width: 120px;"
-                                    onerror="this.onerror=null;this.src='../images/logos/logo.png';"
-                                    class="sidebar-icon" alt="Home Icon">
-                                Home
-                            </li>
-
                             <?php include '../api/categories.php'; ?>
                         </ul>
                     </div>
@@ -57,194 +230,144 @@
 
 
         <div class="menu-content">
-            <div style="height: 80px; display: flex;margin-bottom: 20px;">
+            <!-- <div style="height: 60px; color:#714a45; display: flex;margin-bottom: 10px;">
                 <h1 class="menu-header"></h1>
-            </div>
+            </div> -->
+            <section aria-label="Menu items" data-i18n-aria-label="menuItems">
+                <div style="height: 130px; color:white;font-size:40px; display: flex;margin-bottom: 10px;">
+                    <p class="menu-header" data-i18n="menuItemsHeading">Menu Items</p>
+                </div>
 
 
-            <div class="menu-grid">
+                <div class="menu-grid">
 
-                <?php include '../api/fetchitems.php'; ?>
 
-                <script>
-                    function filterItems(categoryId) {
-                        const menuItems = document.querySelectorAll('.menu-item');
-                        const categoryItems = document.querySelectorAll('.category-item');
-                        const nameHeader = document.querySelector('.menu-header');
 
-                        if (categoryId === 'all') {
-                            nameHeader.textContent = 'All Menu Items';
-                        } else {
+                    <?php include '../api/fetchitems.php'; ?>
+
+                    <script>
+                        function filterItems(categoryId) {
+                            const menuItems = document.querySelectorAll('.menu-item');
+                            const categoryItems = document.querySelectorAll('.category-item');
+                            const selectedCategoryId = String(categoryId);
                             const selectedCategory = document.querySelector(
-                                `.category-item[data-category="${categoryId}"]`);
-                            if (selectedCategory) {
-                                nameHeader.textContent = selectedCategory.textContent.trim();
-                            } else {
-                                nameHeader.textContent = 'Menu Items';
-                            }
+                                `.category-item[data-category="${selectedCategoryId}"]`);
+
+                            if (!selectedCategory) return;
+
+                            const heading = document.querySelector('.menu-header');
+                            heading.removeAttribute('data-i18n');
+                            heading.textContent = selectedCategory.textContent.trim();
+
+                            menuItems.forEach(item => {
+                                item.style.display = item.dataset.category === selectedCategoryId ? '' : 'none';
+                            });
+                            categoryItems.forEach(item => item.classList.toggle('active', item === selectedCategory));
                         }
 
+                        const firstCategory = document.querySelector('.sidebar .category-item');
+                        if (firstCategory) filterItems(firstCategory.dataset.category);
+                    </script>
 
-                        categoryItems.forEach(item => item.classList.remove('active'));
+                </div>
+            </section>
 
-                        document.querySelector(`[data-category="${categoryId}"]`).classList.add('active');
-
-                        menuItems.forEach(item => {
-                            if (categoryId === 'all' || item.dataset.category === categoryId.toString()) {
-                                item.style.display = 'block';
-                            } else {
-                                item.style.display = 'none';
-                            }
-                        });
-                    }
-
-
-                    filterItems('all');
-                </script>
-
-            </div>
         </div>
 
     </div>
 
-    <div class="footer">
-        <div class="footer-container" style="display: flex; justify-content: space-between; align-items: center;">
-            <button class="footer-btn return-btn" onclick="finishOrder()"
-                style="background: var(--secondary-color); color: #fff8f3; padding: 12px 22px; font-size: 20px; font-weight: bold; border: none; cursor: pointer; border-radius: 8px;">CANCEL
-                ORDER</button>
 
-
-            <button class="footer-btn view-cart-btn" onclick="showOrderModal()"
-                style="background: var(--secondary-color); color: #fff8f3; padding: 10px 20px; font-size: 20px; border: none; cursor: pointer; border-radius: 8px;">CHECK
-                OUT (<span>0</span>)</button>
-            <span class="cart-price" style="color: black">₱0.00</span>
-        </div>
-    </div>
-    </div>
-
-    <!-- Order Summary Modal -->
-
-    <div id="orderSummaryModal" class="modal"
-        style="display: none;position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 9999; align-items: center; justify-content: center; font-family: 'Yusei Magic', sans-serif;">
+    <!-- Payment Options Modal -->
+    <div id="paymentOptionsModal" class="modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.8); z-index: 9999; align-items: center; justify-content: center;">
         <div class="modal-content"
-            style="background: var(--primary-color); background-size: cover; padding-top:0%;  width: 100%; height: 100%; max-width: 1200px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); overflow: hidden; display: flex; flex-direction: column; max-height: 100vh;">
+            style="background: white; width: 100%; max-width: 800px; border-radius: 24px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); overflow: hidden; text-align: center; max-height: 90vh; overflow-y: auto;">
 
-            <div
-                style="  border-bottom-left-radius: 55px; width:90%;  border-bottom-right-radius: 55px; padding: 30px 40px 20px; background: var(--secondary-color);  border-bottom: 1px solid black; position: relative;">
-                <img src="../images/icons/back.png" alt="" style="height: 28px;
-                width: 30px; position: absolute; left: 20px;" onclick="closeOrderModal()" />
-                <h2
-                    style="margin: 0; font-size: 32px; font-weight: 700; color: var(--primary-color); text-align: center;">
-                    YOUR ORDER SUMMARY</h2>
+            <div style="padding: 40px 50px 30px; position: relative; border-bottom: 1px solid #f0f0f0;">
+                <h2 style="margin: 0; font-size: clamp(24px, 5vw, 36px); font-weight: 700; color: #333;" data-i18n="selectPayment">Select
+                    Payment Method</h2>
+                <p style="margin: 15px 0 0; color: #666; font-size: clamp(16px, 3vw, 20px);" data-i18n="choosePayment">Choose how you'd like
+                    to pay for your order</p>
             </div>
 
-            <div class="orderbox" style="padding: 30px 40px; overflow: auto; overflow:auto; ">
-                <div id="orderItemsContainer" style="display: flex; flex-direction: column;">
-                </div>
-            </div>
-
-            <div class="checkout-container"
-                style="background: var(--secondary-color); padding: 30px 40px; border-top: 1px solid black; border-radius:20px; position: absolute; bottom: 0px; width: 91%;">
-                <div class="price-row"
-                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-                    <div class="price-labels">
-                        <p style="margin: 0 0 5px; font-size: 18px; color: var(--primary-color);">Subtotal</p>
-                        <p style="margin: 0 0 5px; font-size: 18px; color: var(--primary-color);">Service Charge
-                            (10%)</p>
-                        <p style="margin: 0; font-size: 18px; color: var(--primary-color);">VAT (12%)</p>
-                    </div>
-                    <div class="price-valuess" style="text-align: right;">
-                        <p id="subtotal" style="margin: 0 0 5px; font-size: 18px; color: var(--primary-color);">₱0.00
-                        </p>
-                        <p id="serviceCharge" style="margin: 0 0 5px; font-size: 18px; color: var(--primary-color); ">
-                            ₱0.00</p>
-                        <p id="vat" style="margin: 0; font-size: 18px; color: var(--primary-color);">₱0.00</p>
-                    </div>
-                </div>
-
-                <div class="total-section"
-                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-top: 15px; border-top: 2px dotted var(--primary-color);">
-                    <h3 style="margin: 0; font-size: 28px; font-weight: 700; color: var(--primary-color);">TOTAL</h3>
-                    <h3 id="total" style="margin: 0; font-size: 28px; font-weight: 700; color: var(--primary-color);">
-                        ₱0.00</h3>
-                </div>
-
-                <div class="button-container" style="display: flex; justify-content: flex-end; gap: 15px;">
-
-                    <button class="btn btn-payment" onclick="proceedToPayment()" class="payment"
-                        style="background: var(--primary-color); color: var(--secondary-color); padding: 15px 40px; font-size: 18px; font-weight: 800; border: none; cursor: pointer; border-radius: 8px; transition: all 0.2s ease;">
-                        PROCEED TO PAYMENT</button>
-                </div>
-            </div>
-        </div>
-        <!-- Payment Options Modal -->
-        <div id="paymentOptionsModal" class="modal"
-            style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.8); z-index: 9999; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif;">
-            <div class="modal-content"
-                style="background: white; width: 100%; max-width: 800px; border-radius: 24px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); overflow: hidden; text-align: center; max-height: 90vh; overflow-y: auto;">
-
-                <div style="padding: 40px 50px 30px; position: relative; border-bottom: 1px solid #f0f0f0;">
-                    <h2 style="margin: 0; font-size: clamp(24px, 5vw, 36px); font-weight: 700; color: #333;">Select
-                        Payment Method</h2>
-                    <p style="margin: 15px 0 0; color: #666; font-size: clamp(16px, 3vw, 20px);">Choose how you'd like
-                        to pay for your order</p>
-                </div>
 
 
-
-                <div style="padding: clamp(20px, 5vw, 50px);">
-                    <div style="display: flex; flex-direction: column; gap: clamp(16px, 3vw, 24px);">
-
-
-                        <button onclick="processPayment('debit-credit')"
-                            style="display: flex; align-items: center; width: 100%; min-height: 80px; height: clamp(80px, 12vw, 100px); background: white; border: 1px solid #e0e0e0; border-radius: 16px; padding: 0 clamp(15px, 3vw, 30px); cursor: pointer; transition: all 0.2s ease; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-                            <div
-                                style="width: clamp(45px, 8vw, 60px); height: clamp(45px, 8vw, 60px); border-radius: 12px; background: #721719; display: flex; align-items: center; justify-content: center; margin-right: clamp(12px, 3vw, 24px); flex-shrink: 0;">
-                                <span style="color: white; font-size: clamp(20px, 4vw, 28px);">💳</span>
-                            </div>
-                            <div style="flex-grow: 1; min-width: 0;">
-                                <h3
-                                    style="margin: 0; font-size: clamp(18px, 3.5vw, 24px); font-weight: 600; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                    Credit / Debit Card</h3>
-                                <p style="margin: 6px 0 0; font-size: clamp(14px, 2.5vw, 18px); color: #666;">Pay
-                                    securely with your card</p>
-                            </div>
-                            <span
-                                style="color: #721719; font-size: clamp(20px, 4vw, 28px); margin-left: clamp(8px, 2vw, 20px); flex-shrink: 0;">›</span>
-                        </button>
+            <div style="padding: clamp(20px, 5vw, 50px);">
+                <div style="display: flex; flex-direction: column; gap: clamp(16px, 3vw, 24px);">
 
 
-                        <button onclick="processPayment('counter')"
-                            style="display: flex; align-items: center; width: 100%; min-height: 80px; height: clamp(80px, 12vw, 100px); background: white; border: 1px solid #e0e0e0; border-radius: 16px; padding: 0 clamp(15px, 3vw, 30px); cursor: pointer; transition: all 0.2s ease; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-                            <div
-                                style="width: clamp(45px, 8vw, 60px); height: clamp(45px, 8vw, 60px); border-radius: 12px; background: #721719; display: flex; align-items: center; justify-content: center; margin-right: clamp(12px, 3vw, 24px); flex-shrink: 0;">
-                                <span style="color: white; font-size: clamp(20px, 4vw, 28px);">💵</span>
-                            </div>
-                            <div style="flex-grow: 1; min-width: 0;">
-                                <h3
-                                    style="margin: 0; font-size: clamp(18px, 3.5vw, 24px); font-weight: 600; color: #333;">
-                                    Pay at Counter</h3>
-                                <p style="margin: 6px 0 0; font-size: clamp(14px, 2.5vw, 18px); color: #666;">Pay when
-                                    you pick up your order</p>
-                            </div>
-                            <span
-                                style="color: #72171980; font-size: clamp(20px, 4vw, 28px); margin-left: clamp(8px, 2vw, 20px); flex-shrink: 0;">›</span>
-                        </button>
-                    </div>
-                </div>
+                    <button onclick="processPayment('debit-credit')"
+                        style="display: flex; align-items: center; width: 100%; min-height: 80px; height: clamp(80px, 12vw, 100px); background: white; border: 1px solid #e0e0e0; border-radius: 16px; padding: 0 clamp(15px, 3vw, 30px); cursor: pointer; transition: all 0.2s ease; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                        <div
+                            style="width: clamp(45px, 8vw, 60px); height: clamp(45px, 8vw, 60px); border-radius: 12px; background: #721719; display: flex; align-items: center; justify-content: center; margin-right: clamp(12px, 3vw, 24px); flex-shrink: 0;">
+                            <span style="color: white; font-size: clamp(20px, 4vw, 28px);">💳</span>
+                        </div>
+                        <div style="flex-grow: 1; min-width: 0;">
+                            <h3
+                                style="margin: 0; font-size: clamp(18px, 3.5vw, 24px); font-weight: 600; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" data-i18n="card">
+                                Credit / Debit Card</h3>
+                            <p style="margin: 6px 0 0; font-size: clamp(14px, 2.5vw, 18px); color: #666;" data-i18n="payWithCard">Pay
+                                securely with your card</p>
+                        </div>
+                        <span
+                            style="color: #721719; font-size: clamp(20px, 4vw, 28px); margin-left: clamp(8px, 2vw, 20px); flex-shrink: 0;">›</span>
+                    </button>
 
-                <!-- Footer -->
-                <div
-                    style="padding: clamp(20px, 4vw, 30px) clamp(20px, 5vw, 50px) clamp(30px, 5vw, 40px); background: #f9f9f9; border-top: 1px solid #f0f0f0;">
-                    <button onclick="closePaymentModal()"
-                        style="width: 100%; height: clamp(55px, 10vw, 70px); font-size: clamp(16px, 3vw, 20px); font-weight: 600; cursor: pointer; transition: all 0.2s ease; background: #721719; color: #ffebcd; border: 2px solid #ffebcd; border-radius: 10px;">
-                        CANCEL
+
+                    <button onclick="processPayment('counter')"
+                        style="display: flex; align-items: center; width: 100%; min-height: 80px; height: clamp(80px, 12vw, 100px); background: white; border: 1px solid #e0e0e0; border-radius: 16px; padding: 0 clamp(15px, 3vw, 30px); cursor: pointer; transition: all 0.2s ease; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                        <div
+                            style="width: clamp(45px, 8vw, 60px); height: clamp(45px, 8vw, 60px); border-radius: 12px; background: #721719; display: flex; align-items: center; justify-content: center; margin-right: clamp(12px, 3vw, 24px); flex-shrink: 0;">
+                            <span style="color: white; font-size: clamp(20px, 4vw, 28px);">💵</span>
+                        </div>
+                        <div style="flex-grow: 1; min-width: 0;">
+                            <h3 style="margin: 0; font-size: clamp(18px, 3.5vw, 24px); font-weight: 600; color: #333;" data-i18n="payAtCounter">
+                                Pay at Counter</h3>
+                            <p style="margin: 6px 0 0; font-size: clamp(14px, 2.5vw, 18px); color: #666;" data-i18n="payAtPickup">Pay when
+                                you pick up your order</p>
+                        </div>
+                        <span
+                            style="color: #72171980; font-size: clamp(20px, 4vw, 28px); margin-left: clamp(8px, 2vw, 20px); flex-shrink: 0;">›</span>
                     </button>
                 </div>
             </div>
+
+            <!-- Footer -->
+            <div
+                style="padding: clamp(20px, 4vw, 30px) clamp(20px, 5vw, 50px) clamp(30px, 5vw, 40px); background: #f9f9f9; border-top: 1px solid #f0f0f0;">
+                <button onclick="closePaymentModal()"
+                    style="width: 100%; height: clamp(55px, 10vw, 70px); font-size: clamp(16px, 3vw, 20px); font-weight: 600; cursor: pointer; transition: all 0.2s ease; background: #721719; color: #ffebcd; border: 2px solid #ffebcd; border-radius: 10px;" data-i18n="cancelUpper">
+                    CANCEL
+                </button>
+            </div>
         </div>
     </div>
+    </div>
     <script>
+        const _originalSetItem = localStorage.setItem.bind(localStorage);
+        localStorage.setItem = (key, value) => {
+            _originalSetItem(key, value);
+            if (key === 'totals') updateTotals();
+        };
+
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'totals') updateTotals();
+        });
+
+        function updateTotals() {
+            const {
+                service_charge = 0, total = 0
+            } = JSON.parse(localStorage.getItem('totals') || '{}');
+
+            const serviceChargeEl = document.getElementById('service-charge');
+            const totalEl = document.getElementById('total');
+
+            if (serviceChargeEl) serviceChargeEl.textContent = `₱${parseFloat(service_charge).toFixed(2)}`;
+            if (totalEl) totalEl.textContent = `₱${parseFloat(total).toFixed(2)}`;
+        }
+
+        updateTotals();
+
         function proceedToPayment() {
 
             const currentOrder = JSON.parse(localStorage.getItem("currentOrder") || "[]");
@@ -279,12 +402,6 @@
 
         function proceedToPayment() {
 
-            const currentOrder = JSON.parse(localStorage.getItem("currentOrder") || "[]");
-            const totals = calculateTotals(currentOrder);
-            localStorage.setItem("totals", JSON.stringify(totals));
-            updateTotal();
-
-
             const mobilebool = localStorage.getItem('isMobile');
 
             if (mobilebool === 'true') {
@@ -293,6 +410,7 @@
             } else {
 
                 window.location.href = '../pages/kioskpayment.php';
+
             }
         }
 
@@ -367,8 +485,15 @@
             document.getElementById('orderTypeModal').style.display = 'none';
         }
 
-        function showOrderModal() {
-            document.getElementById('orderSummaryModal').style.display = 'flex';
+        function Tocart() {
+            const currentOrder = JSON.parse(localStorage.getItem("currentOrder") || "[]");
+
+            if (currentOrder.length === 0) {
+                showOrderModal();
+                return;
+            }
+
+            window.location.href = '../pages/cart.php';
         }
 
         function closeOrderModal() {
@@ -381,6 +506,38 @@
         function closePaymentModal() {
             document.getElementById('paymentOptionsModal').style.display = 'none';
         }
+
+        (function watchKioskContentChanges() {
+            const versionUrl = '../api/kioskContentVersion.php';
+            let currentVersion = null;
+
+            async function checkVersion() {
+                try {
+                    const response = await fetch(versionUrl + '?t=' + Date.now(), {
+                        cache: 'no-store'
+                    });
+                    if (!response.ok) return;
+
+                    const data = await response.json();
+                    const nextVersion = String(data.version || '0');
+
+                    if (currentVersion === null) {
+                        currentVersion = nextVersion;
+                        return;
+                    }
+
+                    if (nextVersion !== currentVersion) {
+                        window.location.reload();
+                    }
+                } catch (error) {
+                    console.warn('Kiosk content refresh check failed', error);
+                }
+            }
+
+            checkVersion();
+            setInterval(checkVersion, 3000);
+        })();
+
         window.addEventListener("DOMContentLoaded", () => {
             const totals = JSON.parse(localStorage.getItem("totals"));
 

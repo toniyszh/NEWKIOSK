@@ -3,15 +3,17 @@
 
 <head>
     <meta charset="UTF-8">
+    <?php require __DIR__ . '/../config/kioskLanguage.php'; ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Scanner - Kiosk</title>
+    <title data-i18n="scannerTitle">QR Code Scanner - Kiosk</title>
+    <script src="../js/script.js" defer></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-        .oswald {
-            font-family: "Oswald", sans-serif;
+        .montserrat {
+            font-family: "Montserrat", sans-serif;
             font-optical-sizing: auto;
-            font-weight: 200;
+            font-weight: 400;
             font-style: normal;
         }
 
@@ -323,20 +325,20 @@
             <img src="../images/icons/qr.png" alt="" style="height: 300px; width: 300px;">
         </div>
 
-        <h1 style="color: #721719;">Scan your QR Here</h1>
+        <h1 style="color: #721719;" data-i18n="scanHere">Scan your QR Here</h1>
 
         <div class="divider"></div>
 
-        <p class="instructions" style="color: #721719;">
+        <p class="instructions" style="color: #721719;" data-i18n="scanInstructions">
             Kindly scan your QR code to view your orders and proceed with your preferred mode of payment.
         </p>
 
         <div class="scanner-frame">
-            <input type="text" id="qrInput" inputmode="none" autocomplete="off" placeholder="Scanner ready..."
+            <input type="text" id="qrInput" inputmode="none" autocomplete="off" placeholder="Scanner ready..." data-i18n-placeholder="scannerReady"
                 style="font-size: 1.5em; padding: 20px; width: 100%; max-width: 500px; border: 3px solid #000; border-radius: 0; text-align: center; opacity: 0; position: absolute; left: -9999px;">
         </div>
 
-        <div class="loading" id="loadingText" style="display: none;">
+        <div class="loading" id="loadingText" style="display: none;" data-i18n="scanning">
             Scanning in Progress...
         </div>
 
@@ -344,42 +346,47 @@
             <div class="status-icon" id="statusIcon"></div>
             <div class="result-title" id="resultTitle"></div>
             <div class="result-data" id="resultData"></div>
-            <button class="scan-again-btn" onclick="scanAgain()">Scan Again</button>
+            <button class="scan-again-btn" onclick="scanAgain()" data-i18n="scanAgain">Scan Again</button>
         </div>
 
         <!-- Order Summary Section -->
-        <div class="order-summary" id="orderSummary" style="position: relative; z-index: 10000; pointer-events: auto; background: transparent">
+        <div class="order-summary" id="orderSummary"
+            style="position: relative; z-index: 10000; pointer-events: auto; background: transparent">
             <h2
-                style="text-align: center; margin-bottom: 30px; font-size: 2em; color: #000; text-transform: uppercase;">
+                style="text-align: center; margin-bottom: 30px; font-size: 2em; color: #000; text-transform: uppercase;" data-i18n="orderSummaryUpper">
                 ORDER SUMMARY</h2>
 
             <div class="order-reference" style="text-align: center; margin-bottom: 30px;">
-                <p style="font-size: 1.4em; margin: 0;"><strong>Reference No:</strong> <span id="referenceDisplay"
+                <p style="font-size: 1.4em; margin: 0;"><strong data-i18n="referenceNumber">Reference No:</strong> <span id="referenceDisplay"
                         style="color: #721c21; font-weight: 700;"></span></p>
             </div>
 
-            <div class="order-items" id="orderItemsDisplay" style="background: transparent; border: 1px solid #721719;"></div>
+            <div class="order-items" id="orderItemsDisplay" style="background: transparent; border: 1px solid #721719;">
+            </div>
 
-            <div class="order-totals" style="border: 2px solid #721719; border-radius: 10px; background: transparent; color: #000">
+            <div class="order-totals"
+                style="border: 2px solid #721719; border-radius: 10px; background: transparent; color: #000">
                 <div class="total-row">
-                    <span class="total-label">Subtotal</span>
+                    <span class="total-label" data-i18n="subtotal">Subtotal</span>
                     <span class="total-value">₱<span id="subtotalDisplay">0.00</span></span>
                 </div>
                 <div class="total-row">
-                    <span class="total-label">Service Charge (10%)</span>
+                    <span class="total-label" data-i18n="serviceChargePercent">Service Charge (10%)</span>
                     <span class="total-value">₱<span id="serviceChargeDisplay">0.00</span></span>
                 </div>
                 <div class="total-row">
-                    <span class="total-label">VAT (12%)</span>
+                    <span class="total-label" data-i18n="vatPercent">VAT (12%)</span>
                     <span class="total-value">₱<span id="vatDisplay">0.00</span></span>
                 </div>
                 <div class="total-row grand-total">
-                    <span class="total-label">TOTAL AMOUNT</span>
+                    <span class="total-label" data-i18n="totalAmount">TOTAL AMOUNT</span>
                     <span class="total-value">₱<span id="grandTotalDisplay">0.00</span></span>
                 </div>
             </div>
-            <button class="payment-button" onclick="proceedToPayment()" style="background: #721719; color: #ffff; border: 2px solid #ffebcd; border-radius: 10px;">PROCEED TO PAYMENT</button>
-            <button class="scan-again-btn" style="width: 100%; margin-top: 15px;" onclick="resetAndScan()">SCAN ANOTHER
+            <button class="payment-button" onclick="proceedToPayment()"
+                style="background: #721719; color: #ffff; border: 2px solid #ffebcd; border-radius: 10px;" data-i18n="proceedToPayment">PROCEED TO
+                PAYMENT</button>
+            <button class="scan-again-btn" style="width: 100%; margin-top: 15px;" onclick="resetAndScan()" data-i18n="scanAnotherOrder">SCAN ANOTHER
                 ORDER</button>
 
             <div class="error-message" id="errorMessage" style="display: none;"></div>
@@ -397,20 +404,20 @@
     pointer-events: auto;"></div>
 
     <script>
-    document.getElementById("fullBack").addEventListener("touchstart", (e) => {
+        document.getElementById("fullBack").addEventListener("touchstart", (e) => {
+
+            const summary = document.getElementById("orderSummary");
+
+            if (summary && summary.contains(e.target)) {
+                return;
+            }
+            history.back();
+        });
 
         const summary = document.getElementById("orderSummary");
-
-        if (summary && summary.contains(e.target)) {
-            return;
+        if (summary) {
+            summary.style.pointerEvents = "auto";
         }
-        history.back();
-    });
-
-    const summary = document.getElementById("orderSummary");
-    if (summary) {
-        summary.style.pointerEvents = "auto";
-    }
 
         let currentReferenceNo = null;
 
@@ -502,13 +509,13 @@
 
 
             localStorage.setItem('scannedOrderData', JSON.stringify({
-                
+
                 referenceNo: orderData.referenceNo,
                 items: orderData.items,
                 summary: orderData.summary
             }));
 
-    
+
 
 
             document.querySelector('.scanner-frame').style.display = 'none';
@@ -540,6 +547,7 @@
                 }));
 
                 window.location.href = '../pages/kioskpayment.php?referenceNo=' + encodeURIComponent(currentReferenceNo);
+
             }
         }
 

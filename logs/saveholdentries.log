@@ -1,0 +1,30 @@
+
+--- 2026-02-09 06:43:35 Incoming saveholdentries payload:
+Array
+(
+    [referenceNo] => 900033
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [itemCode] => 18
+                    [description] => Tomato Mushroom
+                    [qty] => 1
+                    [price] => 120
+                    [salesRepNo] => 
+                    [discountReasonCode] => 
+                    [originalPrice] => 120
+                    [salesTax] => 0
+                    [uom] => ORDER
+                    [packingQty] => 1
+                    [itemType] => 0
+                    [lineAddOn] => 0
+                    [taxExemptAmt] => 0
+                    [lineDiscount] => 0
+                    [parentId] => 
+                    [sync] => 0
+                )
+
+        )
+
+)
